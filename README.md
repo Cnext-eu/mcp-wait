@@ -1,123 +1,91 @@
-# wait MCP server
 
-A MCP server project
+# mcp-wait: Model Context Protocol (MCP) Server
 
-## Components
+mcp-wait is a reference [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) server that demonstrates a simple note storage system and a wait utility, built using the [create-python-server SDK](https://github.com/modelcontextprotocol/create-python-server).
 
-### Resources
+## Features
 
-The server implements a simple note storage system with:
-- Custom note:// URI scheme for accessing individual notes
-- Each note resource has a name, description and text/plain mimetype
-
-### Prompts
-
-The server provides a single prompt:
-- summarize-notes: Creates summaries of all stored notes
-  - Optional "style" argument to control detail level (brief/detailed)
-  - Generates prompt combining all current notes with style preference
-
-### Tools
-
-The server implements two tools:
-- add-note: Adds a new note to the server
-  - Takes "name" and "content" as required string arguments
-  - Updates server state and notifies clients of resource changes
-- wait: Waits for a specified number of seconds before responding
-  - Takes "seconds" as a required integer argument
-  - Responds after the specified delay
-
-## Configuration
-
-[TODO: Add configuration details specific to your implementation]
+- **Tools:**
+  - `wait`: Wait for a specified number of seconds before responding
+    - Argument: `seconds` (integer)
 
 ## Quickstart
 
-### Install
+### Prerequisites
+- [uv](https://github.com/astral-sh/uv) (for dependency management)
+- Python 3.8+
 
-#### Claude Desktop
+### Installation
 
-On MacOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
-On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+1. **Install dependencies:**
+   ```bash
+   uv sync
+   ```
 
-<details>
-  <summary>Development/Unpublished Servers Configuration</summary>
-  ```
-  "mcpServers": {
-    "wait": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "C:\cnext\mcp-wait",
-        "run",
-        "wait"
-      ]
-    }
+2. **Run the server:**
+   ```bash
+   uv --directory . run wait
+   ```
+
+### Claude Desktop Integration
+
+Add the following to your Claude Desktop config:
+
+**Development/Unpublished:**
+```json
+"mcpServers": {
+  "wait": {
+    "command": "uv",
+    "args": ["--directory", "C:/cnext/mcp-wait", "run", "wait"]
   }
-  ```
-</details>
+}
+```
 
-<details>
-  <summary>Published Servers Configuration</summary>
-  ```
-  "mcpServers": {
-    "wait": {
-      "command": "uvx",
-      "args": [
-        "wait"
-      ]
-    }
+**Published:**
+```json
+"mcpServers": {
+  "wait": {
+    "command": "uvx",
+    "args": ["wait"]
   }
-  ```
-</details>
+}
+```
 
 ## Development
 
-### Building and Publishing
-
-To prepare the package for distribution:
-
-1. Sync dependencies and update lockfile:
-```bash
-uv sync
-```
-
-2. Build package distributions:
-```bash
-uv build
-```
-
-This will create source and wheel distributions in the `dist/` directory.
-
+### Build & Publish
+1. Sync dependencies:
+   ```bash
+   uv sync
+   ```
+2. Build distributions:
+   ```bash
+   uv build
+   ```
 3. Publish to PyPI:
-```bash
-uv publish
-```
-
-Note: You'll need to set PyPI credentials via environment variables or command flags:
-- Token: `--token` or `UV_PUBLISH_TOKEN`
-- Or username/password: `--username`/`UV_PUBLISH_USERNAME` and `--password`/`UV_PUBLISH_PASSWORD`
+   ```bash
+   uv publish
+   ```
+   - Set credentials via `--token`/`UV_PUBLISH_TOKEN` or `--username`/`UV_PUBLISH_USERNAME` and `--password`/`UV_PUBLISH_PASSWORD`
 
 ### Debugging
-
-Since MCP servers run over stdio, debugging can be challenging. For the best debugging
-experience, we strongly recommend using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector).
-
-
-You can launch the MCP Inspector via [`npm`](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) with this command:
-
+For best results, use the [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
 ```bash
-npx @modelcontextprotocol/inspector uv --directory C:\cnext\mcp-wait run wait
+npx @modelcontextprotocol/inspector uv --directory C:/cnext/mcp-wait run wait
 ```
-
-
-Upon launching, the Inspector will display a URL that you can access in your browser to begin debugging.
+Open the displayed URL in your browser to debug.
 
 ## Containerization
 
-A `Dockerfile` is included for containerization. To build and run the container:
-
+Build and run with Docker:
 ```bash
 docker build -t mcp-wait .
 docker run --rm -p 8000:8000 mcp-wait
 ```
+
+## Project Structure
+
+- `src/wait/` — Main server implementation
+- `Dockerfile` — Containerization
+- `pyproject.toml` — Project metadata and dependencies
+- `uv.lock` — Dependency lockfile
