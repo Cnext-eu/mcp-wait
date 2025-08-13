@@ -1,0 +1,17 @@
+[project]
+name = "wait"
+version = "0.1.0"
+description = "A MCP server project"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [ "mcp>=1.11.0",]
+[[project.authors]]
+name = "KobeLenjou"
+email = "kobe@lenjou.be"
+
+[build-system]
+requires = [ "hatchling",]
+build-backend = "hatchling.build"
+
+[project.scripts]
+wait = "wait:main"
