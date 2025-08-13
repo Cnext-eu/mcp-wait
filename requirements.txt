@@ -1,0 +1,6 @@
+python-dotenv
+# For SQL Server access and Azure AD authentication
+pyodbc
+azure-identity
+uv
+fastmcp
