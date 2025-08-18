@@ -1,10 +1,10 @@
 {
   "version": "0.2.0",
   "servers": {
-    "wait": {
+    "mcp": {
       "type": "stdio",
       "command": "python",
-      "args": ["-m", "wait.server"]
+      "args": ["-m", "mpl-mcp.server"]
     }
   }
 }
